@@ -9,7 +9,7 @@ import gdata.sites.client
 
 
 def upload_file(rosefiji_email, password, dept, file_handle):
-    departments = ['AB', 'BE', 'BIO', 'CE', 'CHE', 'CHEM', 'CSSE', 'ECE', 'EM', 'EMGT', 'EP', 'HSS', 'ES', 'MA', 'ME', 'OE', 'PH']
+    departments = ['AB', 'BE', 'BIO', 'CE', 'CHE', 'CHEM', 'CSSE', 'ECE', 'EM', 'EMGT', 'EP', 'IA', 'SV', 'GS', 'ES', 'MA', 'ME', 'OE', 'PH']
     if dept not in departments:
         raise Exception("Invalid Department")
     client = gdata.sites.client.SitesClient(source='rhophi-fijifiles-v1', site='fiji-files', domain='rosefiji.com')

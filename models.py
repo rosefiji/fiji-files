@@ -7,6 +7,18 @@ Created on Oct 10, 2014
 '''
 from google.appengine.ext import ndb
 
-
 class File(ndb.Model):
-    pass
+    department = ndb.StringProperty()
+    classNumber = ndb.StringProperty()
+    professor = ndb.StringProperty()
+    fileType = ndb.StringProperty()
+    # Valid Types:
+    #    Exam 1 - 5
+    #    Final
+    #    Quiz
+    #    Homework
+    TermCode = ndb.IntegerProperty()
+    # 201510 is FallQtr for the 2014-2015 school year
+
+class ScholarshipCommittee(ndb.Model):
+    emails = ndb.StringProperty(repeated=True)
