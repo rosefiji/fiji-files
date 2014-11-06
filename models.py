@@ -7,18 +7,15 @@ Created on Oct 10, 2014
 '''
 from google.appengine.ext import ndb
 
-class File(ndb.Model):
-    department = ndb.StringProperty()
-    classNumber = ndb.StringProperty()
-    professor = ndb.StringProperty()
-    fileType = ndb.StringProperty()
-    # Valid Types:
-    #    Exam 1 - 5
-    #    Final
-    #    Quiz
-    #    Homework
-    TermCode = ndb.IntegerProperty()
-    # 201510 is FallQtr for the 2014-2015 school year
+FILE_TYPES = ["Exam 1", "Exam 2", "Exam 3", "Exam 4", "Exam 5", "Final", "Quiz", "Homework"]
 
-class ScholarshipCommittee(ndb.Model):
-    emails = ndb.StringProperty(repeated=True)
+DEPARTMENTS = ['AB', 'BE', 'BIO', 'CE', 'CHE', 'CHEM', 'CSSE', 'ECE', 'EM', 'EMGT', 'EP', 'IA', 'SV', 'GS', 'ES', 'MA', 'ME', 'OE', 'PH']
+
+class File(ndb.Model):
+    department = ndb.StringProperty(required=True, choices=DEPARTMENTS)
+    classNumber = ndb.IntegerProperty(required=True)
+    professor = ndb.StringProperty(required=True)
+    fileType = ndb.StringProperty(required=True, choices=FILE_TYPES)
+    TermCode = ndb.IntegerProperty(required=True)  # 201510 is FallQtr for the 2014-2015 school year
+
+

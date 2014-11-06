@@ -17,16 +17,11 @@
 import webapp2
 import jinja2
 import os
+from handlers import main_handler
 
 jinja_env = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
   autoescape=True)
 
-class MainHandler(webapp2.RequestHandler):
-    def get(self):
-        template = jinja_env.get_template("templates/index.html")
-        self.response.out.write(template.render())
 
-app = webapp2.WSGIApplication([
-    ('/', MainHandler)
-], debug=True)
+app = webapp2.WSGIApplication(main_handler.SITEMAP, debug=True)
