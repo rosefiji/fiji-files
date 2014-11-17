@@ -13,6 +13,9 @@ handlers:
 - url: /static
   static_dir: static
 
+- url: /datastore
+  script: main.api
+
 - url: .*
   script: main.app
   login: required

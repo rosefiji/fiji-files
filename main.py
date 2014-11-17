@@ -25,3 +25,4 @@ jinja_env = jinja2.Environment(
 
 
 app = webapp2.WSGIApplication(main_handler.SITEMAP, debug=True)
+api = webapp2.WSGIApplication(main_handler.API, debug=True)
