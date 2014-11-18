@@ -84,21 +84,21 @@
 							<td><a href="#"><span class="glyphicon glyphicon-link"></span></a></td>
 							<td>Boutell</td>
 							<td>201510</td>
-							<td>Exam 1</td>
+							<td>Exam1</td>
 							<td>89%. Taken by Tyler Rockwood</td>
 						</tr>
 						<tr>
 							<td><a href="#"><span class="glyphicon glyphicon-link"></span></a></td>
 							<td>Boutell</td>
 							<td>201510</td>
-							<td>Exam 2</td>
+							<td>Exam2</td>
 							<td>90%. Taken by Tyler Rockwood</td>
 						</tr>
 						<tr>
 							<td><a href="#"><span class="glyphicon glyphicon-link"></span></a></td>
 							<td>Mutchler</td>
 							<td>201310</td>
-							<td>Exam 2</td>
+							<td>Exam2</td>
 							<td>1000% Taken by Brother Gifted</td>
 						</tr>
 					</tbody>
@@ -121,21 +121,21 @@
 							<td><a href="#"><span class="glyphicon glyphicon-link"></span></a></td>
 							<td>Boutell</td>
 							<td>201520</td>
-							<td>Exam 1</td>
+							<td>Exam1</td>
 							<td>89%. Taken by Tyler Rockwood</td>
 						</tr>
 						<tr>
 							<td><a href="#"><span class="glyphicon glyphicon-link"></span></a></td>
 							<td>Boutell</td>
 							<td>201520</td>
-							<td>Exam 2</td>
+							<td>Quiz</td>
 							<td>90%. Taken by Tyler Rockwood</td>
 						</tr>
 						<tr>
 							<td><a href="#"><span class="glyphicon glyphicon-link"></span></a></td>
 							<td>Taylor</td>
 							<td>201310</td>
-							<td>Exam 2</td>
+							<td>Exam2</td>
 							<td>1000% Taken by Brother Gifted</td>
 						</tr>
 					</tbody>
@@ -158,11 +158,11 @@
 			// Init the datatables
 			$('.table').dataTable({
 				"aoColumns" : [ {
-					"bSortable" : false
+					"bSortable" : false, "searchable": false
 				}, null, null, null, {
-					"bSortable" : false
+					"bSortable" : false, "searchable": false
 				} ],
-				"order" : [ [ 2, "asc" ] ]
+				"order" : [ [ 2, "desc" ] ]
 			});
 		});
 	</script>

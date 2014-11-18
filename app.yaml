@@ -15,6 +15,7 @@ handlers:
 
 - url: /datastore
   script: main.api
+  secure: always
 
 - url: .*
   script: main.app

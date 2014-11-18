@@ -17,7 +17,7 @@
 import webapp2
 import jinja2
 import os
-from handlers import main_handler
+from handlers import main_handler, data_handler
 
 jinja_env = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -25,4 +25,4 @@ jinja_env = jinja2.Environment(
 
 
 app = webapp2.WSGIApplication(main_handler.SITEMAP, debug=True)
-api = webapp2.WSGIApplication(main_handler.API, debug=True)
+api = webapp2.WSGIApplication(data_handler.API, debug=True)

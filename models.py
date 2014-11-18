@@ -9,7 +9,7 @@ from google.appengine.api import memcache
 from google.appengine.ext import ndb
 
 
-FILE_TYPES = ["Exam_1", "Exam_2", "Exam_3", "Exam_4", "Exam_5", "Final", "Quiz", "Homework"]
+FILE_TYPES = ["Exam1", "Exam2", "Exam3", "Exam4", "Exam5", "Final", "Quiz", "Homework", "Paper", "Other"]
 
 DEPARTMENTS = ['AB', 'BE', 'BIO', 'CE', 'CHE', 'CHEM', 'CSSE', 'ECE', 'EM', 'EMGT', 'EP', 'IA', 'SV', 'GS', 'ES', 'MA', 'ME', 'OE', 'PH']
 
@@ -36,11 +36,11 @@ DEPARTMENT_NAMES = {'AB':"Applied Biology",
 class Course(ndb.Model):
     # Includes a key with an id of dept and num? ie. CSSE120
     department = ndb.StringProperty(required=True, choices=DEPARTMENTS)
-    class_number = ndb.IntegerProperty(required=True, choices=range(101, 600))
+    course_number = ndb.IntegerProperty(required=True, choices=range(101, 600))
 
 class File(ndb.Model):
     # Randomly generated key?
-    course = ndb.KeyProperty(required=True, kind=Course)
+    #course = ndb.KeyProperty(required=True, kind=Course) PARENT KEY!
     professor = ndb.StringProperty(required=True)
     file_type = ndb.StringProperty(required=True, choices=FILE_TYPES)
     termcode = ndb.IntegerProperty(required=True)  # 201510 is FallQtr for the 2014-2015 school year
