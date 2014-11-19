@@ -40,12 +40,12 @@ class Course(ndb.Model):
 
 class File(ndb.Model):
     # Randomly generated key?
-    #course = ndb.KeyProperty(required=True, kind=Course) PARENT KEY!
+    # course = ndb.KeyProperty(required=True, kind=Course) PARENT KEY!
     professor = ndb.StringProperty(required=True)
     file_type = ndb.StringProperty(required=True, choices=FILE_TYPES)
     termcode = ndb.IntegerProperty(required=True)  # 201510 is FallQtr for the 2014-2015 school year
-    file_url = ndb.StringProperty(required=True)  # This is the link to the pdf file
-    file_delete_url = ndb.StringProperty(required=True)
+    url = ndb.StringProperty(required=True)  # This is the link to the pdf file
+    delete_url = ndb.StringProperty(required=True)
     comments = ndb.TextProperty()
 
 class UploadCount(ndb.Model):
@@ -62,6 +62,6 @@ def get_upload_number():
             # not in datastore create a new count
             entity = UploadCount(id="COUNT")
     entity.count += 1
-    client.add('COUNT', entity)
+    client.set('COUNT', entity)
     entity.put()
     return "%08d" % entity.count
