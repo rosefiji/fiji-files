@@ -66,10 +66,12 @@ class FileDatastoreHandler(webapp2.RequestHandler):
             course_dept = file_request["department"]
             course_number = file_request["courseNumber"]
             course_key = ndb.Key("Course", course_dept + str(course_number))
-            if not course_key.get():
-                models.Course(key=course_key,
+            course = course_key.get()
+            if not course:
+                course = models.Course(key=course_key,
                               department=course_dept,
-                              course_number=course_number).put()
+                              course_number=course_number)
+                course.put()
             file_to_add = models.File(parent=course_key,
                                       professor=file_request["professor"],
                                       file_type=file_request["type"],
