@@ -7,31 +7,32 @@ Created on Oct 10, 2014
 '''
 from google.appengine.api import memcache
 from google.appengine.ext import ndb
+from collections import OrderedDict
 
 
 FILE_TYPES = ["Exam1", "Exam2", "Exam3", "Exam4", "Exam5", "Final", "Quiz", "Homework", "Paper", "Other"]
 
 DEPARTMENTS = ['AB', 'BE', 'BIO', 'CE', 'CHE', 'CHEM', 'CSSE', 'ECE', 'EM', 'EMGT', 'EP', 'IA', 'SV', 'GS', 'ES', 'MA', 'ME', 'OE', 'PH']
 
-DEPARTMENT_NAMES = {'AB':"Applied Biology",
-                    'BE':"Biomedical Engineering",
-                    'BIO':"Biology",
-                    'CE':"Civil Engineering",
-                    'CHE':"Chemical Engineering",
-                    'CHEM':"Chemistry",
-                    'CSSE':"Computer Science & Software Engineering",
-                    'ECE':"Electrical & Computer Engineering",
-                    'EM':"Engineering Mechanics",
-                    'EMGT':"Engineering Management",
-                    'EP':"Engineering Physics",
-                    'IA':"Ideas & Arts",
-                    'SV':"Society & Values",
-                    'GS':"Global Science",
-                    'ES':"Sophomore Engineering",
-                    'MA':"Mathematics",
-                    'ME':"Mechanical Engineering",
-                    'OE':"Optical Engineering",
-                    'PH':"Physics"}
+DEPARTMENT_NAMES = OrderedDict([('AB', "Applied Biology"),
+                    ('BE', "Biomedical Engineering"),
+                    ('BIO', "Biology"),
+                    ('CE', "Civil Engineering"),
+                    ('CHE', "Chemical Engineering"),
+                    ('CHEM', "Chemistry"),
+                    ('CSSE', "Computer Science & Software Engineering"),
+                    ('ECE', "Electrical & Computer Engineering"),
+                    ('EM', "Engineering Mechanics"),
+                    ('EMGT', "Engineering Management"),
+                    ('EP', "Engineering Physics"),
+                    ('IA', "Ideas & Arts"),
+                    ('SV', "Society & Values"),
+                    ('GS', "Global Science"),
+                    ('ES', "Sophomore Engineering"),
+                    ('MA', "Mathematics"),
+                    ('ME', "Mechanical Engineering"),
+                    ('OE', "Optical Engineering"),
+                    ('PH', "Physics")])
 
 class Course(ndb.Model):
     # Includes a key with an id of dept and num? ie. CSSE120
@@ -47,6 +48,22 @@ class File(ndb.Model):
     url = ndb.StringProperty(required=True)  # This is the link to the pdf file
     delete_url = ndb.StringProperty(required=True)
     comments = ndb.TextProperty()
+
+    def get_string_termcode(self):
+        term = str(self.termcode)
+        year = int(term[:-2])
+        qtr = int(term[-2:])
+        year = str(year - 1) + "-" + str(year)
+        if qtr == 10:
+            qtr = "Fall "
+        elif qtr == 20:
+            qtr = "Winter "
+        elif qtr == 30:
+            qtr = "Spring "
+        elif qtr == 40:
+            qtr = "Summer "
+        return qtr + year
+
 
 class UploadCount(ndb.Model):
     count = ndb.IntegerProperty(default=0)

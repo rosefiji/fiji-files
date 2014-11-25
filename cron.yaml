@@ -1,0 +1,4 @@
+cron:
+- description: Clean up empty courses in datastore
+  url: /tasks
+  schedule: every 730 hours
