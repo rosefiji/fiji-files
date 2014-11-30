@@ -17,7 +17,7 @@
 					</thead>
 					<tbody>
 						{% for f in files[course] %}<tr>
-							<td><a href="{{f.url}}"><span class="glyphicon glyphicon-link"></span></a></td>
+							<td data-toggle="tooltip" data-placement="right" title="View File"><a href="{{f.url}}"><span class="glyphicon glyphicon-link"></span></a></td>
 							<td>{{f.professor}}</td>
 							<td>{{f.get_string_termcode()}}</td>
 							<td>{{f.file_type}}</td>
