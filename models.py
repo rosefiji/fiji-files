@@ -14,8 +14,7 @@ FILE_TYPES = ["Exam1", "Exam2", "Exam3", "Exam4", "Exam5", "Final", "Quiz", "Hom
 
 DEPARTMENTS = ['BE', 'BIO', 'CE', 'CHE', 'CHEM', 'CSSE', 'ECE', 'EM', 'EMGT', 'EP', 'IA', 'SV', 'GS', 'ES', 'MA', 'ME', 'OE', 'PH']
 
-DEPARTMENT_NAMES = OrderedDict([('AB', "Applied Biology"),
-                    ('BE', "Biomedical Engineering"),
+DEPARTMENT_NAMES = OrderedDict([('BE', "Biomedical Engineering"),
                     ('BIO', "Biology"),
                     ('CE', "Civil Engineering"),
                     ('CHE', "Chemical Engineering"),
