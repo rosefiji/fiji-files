@@ -66,11 +66,13 @@
 		src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript"
 		src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
 			// Init the datatables
 			$('.table').dataTable({
 				"aoColumns" : [ {
+					"sWidth": "75px", 
 					"bSortable" : false,
 					"searchable" : false
 				}, null, null, null, {
@@ -80,7 +82,7 @@
 				"order" : [ [ 1, "asc" ], [ 2, "asc" ] ]
 			});
 			// Show tooltips!
-			$('[data-toggle="tooltip"]').tooltip({html: true});
+			$('span[data-toggle="tooltip"]').tooltip({html: true});
 		});
 		
 	</script>
