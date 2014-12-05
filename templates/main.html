@@ -9,18 +9,18 @@
 					<thead>
 						<tr>
 							<th></th>
-							<th>Professor</th>
+                            <th>Type</th>							
 							<th>Term</th>
-							<th>Type</th>
+							<th>Professor</th>
 							<th>Comments</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for f in files[course] %}<tr>
 							<td data-toggle="tooltip" data-placement="right" title="View File"><a href="{{f.url}}"><span class="glyphicon glyphicon-link"></span></a></td>
-							<td>{{f.professor}}</td>
-							<td>{{f.get_string_termcode()}}</td>
 							<td>{{f.file_type}}</td>
+							<td>{{f.get_string_termcode()}}</td>							
+                            <td>{{f.professor}}</td>
 							<td>{{f.comments}}</td>
 						</tr>{% endfor %}
 					</tbody>
