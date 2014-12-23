@@ -11,6 +11,7 @@ API_PROXY = "sdaemon@rosefiji.com"
 
 API_PASSCODE = ""
 
+
 class FileDatastoreHandler(webapp2.RequestHandler):
     """ The RESTful API calls for the file manager to use """
 
@@ -87,13 +88,25 @@ class FileDatastoreHandler(webapp2.RequestHandler):
         self.response.out.write(json.dumps(response))
 
     def put(self):
-        """ Gets the number of files in the datastore """
+        """ Updates a file in the datastore """
         if not self.verify_access():
             self.response.out.write(FileDatastoreHandler.ERROR_PAGE)
             self.response.set_status(401)
             return
+        file_request = json.loads(self.request.get('uploadRequest'))
+        logging.info(file_request)
         self.response.headers['Content-Type'] = 'application/json'
-        response = {"count" : models.get_upload_number()}
+        response = {}
+        try:
+            file_to_update = models.File.query(models.File.url == file_request["href"]).get()
+            # update
+            file_to_update.professor = file_request['professor']
+            file_to_update.comments = file_request['comments']
+            file_to_update.put()
+            response["upload_request"] = "success"
+        except Exception, e:
+            logging.exception(e)
+            response["upload_request"] = "failure"
         self.response.out.write(json.dumps(response))
 
     def delete(self):
@@ -123,6 +136,25 @@ class FileDatastoreHandler(webapp2.RequestHandler):
     def verify_access(self):
         user = self.request.cookies.get('user')
         passcode = self.request.cookies.get('passcode')
+        logging.warn(str(user) + '|' + str(passcode))
         return user == API_PROXY and passcode == API_PASSCODE
 
-API = [ ("/datastore", FileDatastoreHandler) ]
+
+class CountDataStoreHandler(webapp2.RequestHandler):
+    def get(self):
+        """ Gets the number of files in the datastore """
+        if not self.verify_access():
+            self.response.out.write(FileDatastoreHandler.ERROR_PAGE)
+            self.response.set_status(401)
+            return
+        self.response.headers['Content-Type'] = 'application/json'
+        response = {"count" : models.get_upload_number()}
+        self.response.out.write(json.dumps(response))
+
+    def verify_access(self):
+        user = self.request.cookies.get('user')
+        passcode = self.request.cookies.get('passcode')
+        logging.warn(str(user) + '|' + str(passcode))
+        return user == API_PROXY and passcode == API_PASSCODE
+
+API = [ ("/datastore", FileDatastoreHandler), ('/datastore/count', CountDataStoreHandler) ]
