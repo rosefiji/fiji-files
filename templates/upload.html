@@ -1,0 +1,98 @@
+{% extends "templates/base.html" %}
+{% block content %}
+{% if msg %}
+<div id="alert" class="alert alert-info">
+  <strong>Hey!</strong> {{msg}}
+</div>
+{% endif %}
+<p>Please make sure to take care when uploading files, these must be in the PDF format. As of now there is no way to edit or delete files. Also, please make sure your files are smaller than 10MB. There are online tools to help shrink PDF sizes.</p>
+<form class="form-horizontal" enctype='multipart/form-data' action="/upload" method="POST">
+  <fieldset>
+    <!-- Form Name -->
+    <legend>Upload File</legend>
+    <!-- Select Basic -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="department">Department</label>
+      <div class="col-md-6">
+        <select id="department" name="department" class="form-control">
+          {% for d in depts %}
+            <option value="{{d}}">{{d}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="courseNumber">Course Number</label>  
+      <div class="col-md-2">
+        <input id="courseNumber" name="courseNumber" type="number" min="101" max="600" value="101" class="form-control input-md" required="">
+      </div>
+    </div>
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="professor">Professor</label>  
+      <div class="col-md-5">
+        <input id="professor" name="professor" type="text" placeholder="Professor" class="form-control input-md">
+      </div>
+    </div>
+    <!-- Select Basic -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="type">File Type</label>
+      <div class="col-md-4">
+        <select id="type" name="type" class="form-control">
+          {% for t in types %}
+            <option value="{{t}}">{{t}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <!-- Select Basic -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="termcode">Termcode</label>
+      <div class="col-md-4">
+        <select id="termcode" name="termcode" class="form-control">
+          {% for t in termcodes %}
+            <option value="{{t.code}}">{{t.term}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <!-- File Button --> 
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="file">File</label>
+      <div class="col-md-4">
+        <input id="file" name="file" class="input-file" type="file">
+      </div>
+    </div>
+    <!-- Textarea -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="comments">Comments</label>
+      <div class="col-md-4">                     
+        <textarea class="form-control" id="comments" name="comments"></textarea>
+      </div>
+    </div>
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="submit"></label>
+      <div class="col-md-4">
+        <button id="submit" name="submit" class="btn btn-primary">Upload</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<div id="upload-progress" class="hidden">
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-info active" 
+      role="progressbar"
+      aria-valuenow="100" 
+      aria-valuemin="0" 
+      aria-valuemax="100"
+      style="width: 100%">
+    </div>
+  </div>
+  <p class="lead">
+    Upload in progress... DON'T refresh the page!
+  </p>
+</div>
+
+{% endblock %}
