@@ -55,3 +55,4 @@ target/
 
 .pydevproject
 .project
+credentials.json
