@@ -21,8 +21,31 @@ class MainHandler(webapp2.RequestHandler):
 class FileDepartmentHandler(webapp2.RequestHandler):
     def get(self, dept):
         template = main.jinja_env.get_template("templates/main.html")
-        values = {"departments": models.DEPARTMENT_NAMES}
+        values = {"departments": models.DEPARTMENT_NAMES, "types": models.FILE_TYPES}
         values["dept"] = dept
+        termcodes = []
+        this_year = date.today().year + 1
+        this_month = date.today().month
+        for year in range(this_year, this_year - 3, -1):
+            yearcode = year * 100
+            for quarter, value in [('Spring', 30), ("Winter", 20), ("Fall", 10)]:
+                termcodes.append({"term":quarter + " " + str(year - 1) + "-" + str(year) ,"code":yearcode + value})
+        values["termcodes"] = termcodes
+        if 1 <= this_month <= 2:
+            # Winter Quarter
+            values["termcodes"] = termcodes[4:]
+        elif 3 <= this_month <= 6:
+            # Spring Quarter
+            values["termcodes"] = termcodes[3:]
+        elif 7 <= this_month <= 8:
+            # Summer
+            pass
+        elif 9 <= this_month <= 11:
+            # Fall Quarter
+            values["termcodes"] = termcodes[2:]
+        elif this_month == 12:
+            # Winter Quarter
+            values["termcodes"] = termcodes[1:]
         course_keys = Course.query(Course.department == dept)
         courses = []
         files = {}
@@ -33,6 +56,45 @@ class FileDepartmentHandler(webapp2.RequestHandler):
         values["courses"] = courses
         values["files"] = files
         self.response.out.write(template.render(values))
+
+class DeleteFileHandler(webapp2.RequestHandler):
+    def post(self):
+        scope = 'https://sites.google.com/feeds/'
+        client = gdata.sites.client.SitesClient(source='rosefiji-fijifiles-v1', site='fiji-files', domain='rosefiji.com')
+        with open('credentials.json') as jsonfile:
+            jsondata = json.load(jsonfile)
+            credentials = SignedJwtAssertionCredentials(
+                jsondata['client_email'],
+                jsondata['private_key'],
+                scope=scope,
+                sub='trockwood@rosefiji.com'
+            )
+        auth2token = gdata.gauth.OAuth2TokenFromCredentials(credentials)
+        auth2token.authorize(client)
+        delete_key = self.request.get('delete_key')
+        try:
+            urlfetch.set_default_fetch_deadline(30)
+            client.Delete(delete_key, force=True)
+        except Exception, e:
+            pass
+        files = models.File.query(models.File.delete_url == delete_key)
+        ndb.delete_multi([key for key in files.iter(keys_only=True)])
+        self.redirect(self.request.referer)
+
+class EditFileHandler(webapp2.RequestHandler):
+    def post(self):
+        key = ndb.Key(urlsafe=self.request.get('entity_key'))
+        file_type = self.request.get('type')
+        termcode = self.request.get('term')
+        comments = self.request.get('comments')
+        prof = self.request.get('professor')
+        f = key.get()
+        f.termcode = int(termcode)
+        f.file_type = file_type
+        f.comments = comments
+        f.professor = prof
+        f.put()
+        self.redirect(self.request.referer)
 
 class FileCourseHandler(webapp2.RequestHandler):
     def get(self, dept, course_number):
@@ -136,5 +198,7 @@ class UploadHandler(webapp2.RequestHandler):
 
 SITEMAP = [ ("/", MainHandler),
             ("/upload", UploadHandler),
+            ("/delete", DeleteFileHandler),
+            ("/edit", EditFileHandler),
             (r"/(\w+)", FileDepartmentHandler),
             (r"/(\w+)/(\d+)", FileCourseHandler) ]
