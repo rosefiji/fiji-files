@@ -8,9 +8,11 @@ import gdata.docs.service
 import gdata.data
 import json
 from datetime import date
-from oauth2client.client import SignedJwtAssertionCredentials
+from oauth2client.service_account import ServiceAccountCredentials
 from google.appengine.ext import ndb
 from google.appengine.api import urlfetch
+
+scopes = ['https://sites.google.com/feeds/']
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -59,16 +61,12 @@ class FileDepartmentHandler(webapp2.RequestHandler):
 
 class DeleteFileHandler(webapp2.RequestHandler):
     def post(self):
-        scope = 'https://sites.google.com/feeds/'
         client = gdata.sites.client.SitesClient(source='rosefiji-fijifiles-v1', site='fiji-files', domain='rosefiji.com')
-        with open('credentials.json') as jsonfile:
-            jsondata = json.load(jsonfile)
-            credentials = SignedJwtAssertionCredentials(
-                jsondata['client_email'],
-                jsondata['private_key'],
-                scope=scope,
-                sub='trockwood@rosefiji.com'
-            )
+        import os.path
+        folder = os.path.dirname(os.path.realpath(__file__))
+        file_path = os.path.join(folder, 'credentials.json')
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(file_path, scopes)
+        credentials._kwargs['sub'] = 'rcoffman@rosefiji.com'
         auth2token = gdata.gauth.OAuth2TokenFromCredentials(credentials)
         auth2token.authorize(client)
         delete_key = self.request.get('delete_key')
@@ -143,18 +141,13 @@ class UploadHandler(webapp2.RequestHandler):
                values['msg'] = 'Error uploading file! Please contact Tech if this is a problem'
        self.response.out.write(template.render(values))
 
-
     def post(self):
-       scope = 'https://sites.google.com/feeds/'
        client = gdata.sites.client.SitesClient(source='rosefiji-fijifiles-v1', site='fiji-files', domain='rosefiji.com')
-       with open('credentials.json') as jsonfile:
-            jsondata = json.load(jsonfile)
-            credentials = SignedJwtAssertionCredentials(
-                     jsondata['client_email'],
-                     jsondata['private_key'],
-                     scope=scope,
-                     sub='trockwood@rosefiji.com'
-            )
+       import os.path
+       folder = os.path.dirname(os.path.realpath(__file__))
+       file_path = os.path.join(folder, 'credentials.json')
+       credentials = ServiceAccountCredentials.from_json_keyfile_name(file_path, scopes)
+       credentials._kwargs['sub'] = 'rcoffman@rosefiji.com'
        auth2token = gdata.gauth.OAuth2TokenFromCredentials(credentials)
        auth2token.authorize(client)
        dept = self.request.params.get('department')
