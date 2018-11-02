@@ -31,7 +31,8 @@ DEPARTMENT_NAMES = OrderedDict([('BE', "Biomedical Engineering"),
                     ('ME', "Mechanical Engineering"),
                     ('OE', "Optical Engineering"),
                     ('PH', "Physics"),
-                    ('SV', "Society & Values"), ])
+                    ('SV', "Society & Values"),
+                    ('IV', "Interview Preperation") ])
 
 class Course(ndb.Model):
     # Includes a key with an id of dept and num? ie. CSSE120
